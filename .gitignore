@@ -110,7 +110,7 @@ acd
 **.pkl
 
 *.jpg
-*.csv
+#*.csv
 *.tar
 
 **.pt
