@@ -1,3 +1,9 @@
+# Note on this fork
+
+- If you are using pipenv to setup a virtual environment for this project, it will use Python 3.12 + the most recent versions for all packages included in the Pipfile.
+- Not sure if it's because I'm using more recent versions than suggested by the original authors, but there's quite a few errors popping up in the .ipynb-files.
+- Currently I've only added the compas-analysis repo inside deep-explanation-penalization/compass, other datasets will eventually be introduced aswell.
+
 <h1 align="center"> Making interpretations useful (CDEP) 🔨</h1>
 
 <p align="center"> Regularizes interpretations (computed via <a href="https://github.com/csinva/hierarchical-dnn-interpretations">contextual decomposition</a>) to improve neural networks. Official code for <i>Interpretations are useful: penalizing explanations to align neural networks with prior knowledges</i> (ICML 2020 <a href="https://arxiv.org/abs/1909.13584">pdf</a>). </p>
