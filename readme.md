@@ -1,87 +1,20 @@
-# Note on this fork
+# CDEP with DeepLIFT
+This fork is an adjusted version of [Contextual Decomposition Explanation Penalization (CDEP)](https://github.com/laura-rieger/deep-explanation-penalization) and also includes changes from [this repository](https://github.com/AminMirzaie/CDEP/). These changes should make the original implementation compatible with newer package versions.
 
-- If you are using pipenv to setup a virtual environment for this project, it will use Python 3.12 + the most recent versions for all packages included in the Pipfile.
-- Not sure if it's because I'm using more recent versions than suggested by the original authors, but there's quite a few errors popping up in the .ipynb-files.
-- Currently I've only added the compas-analysis repo inside deep-explanation-penalization/compass, other datasets will eventually be introduced aswell.
+## What is CDEP?
+Datasets often include misleading information in the data, which models tend to use in their predictions, even though they are actually irrelevant. Imaging you have an image classifier that decides, if an image shows a "dog" or not. The model may look at wrong areas in images, like the background or objects like dog toys, which frequently appear in those images. In order to fix this issue, CDEP can penalize the model for looking at the wrong information, so that they only produce right predictions for the right reasons (by looking at the dog). To do this uses a generalized version of [Contextual Decompositions (CD)](https://github.com/jamie-murdoch/ContextualDecomposition) to figure out, what information in data models use. Then it compares this to the actual ground-truth explanation and if the model's explanation differs from it, they will be penalized.
+To find out more about CDEP, you can read the paper [here](http://proceedings.mlr.press/v119/rieger20a.html) if you are interested. :)
 
-<h1 align="center"> Making interpretations useful (CDEP) 🔨</h1>
+## What is this repository doing?
+I'm currently trying to change the CDEP implementation by replacing CD with [DeepLIFT](https://github.com/kundajelab/deeplift), specifically the PyTorch implementation provided by the [Captum](https://github.com/pytorch/captum/tree/master) library. I will be using this modification on the ISIC-experiment and the ColorMNIST-experiment and observe, how this could improve the model's accuracy. But since I'm a PyTorch noob, this idea may not work out as I had planned. We'll see what happens...
 
-<p align="center"> Regularizes interpretations (computed via <a href="https://github.com/csinva/hierarchical-dnn-interpretations">contextual decomposition</a>) to improve neural networks. Official code for <i>Interpretations are useful: penalizing explanations to align neural networks with prior knowledges</i> (ICML 2020 <a href="https://arxiv.org/abs/1909.13584">pdf</a>). </p>
+## Setup
+You'll need Python +12.0 and CUDA 12.1 (with PyTorch 2.3.1). I'd recommend getting the Conda package manager from [Anaconda](https://www.anaconda.com/download/success) to install the other dependencies. In the Jupyter-notebook /isic-skin-cancer/ISIC/Run_ISIC.ipynb you have instructions on how to install necessary packages with Conda for the ISIC-experiment. If some imports won't work, try reinstalling (or uninstall, then install) those packages manually.
+I've also included a requirements.txt, although it's still incomplete and I will be updating it, so it hopefully works in the future. Once I've fixed this, you should be able to run "conda env create -f requirements.txt" to create a Conda-environment and immediately install all dependencies.
 
-
-<p align="center">
-  <img src="https://img.shields.io/badge/python-3.6--3.9-blue">
-  <img src="https://img.shields.io/badge/pytorch-1.0%2B-blue">
-  <img src="https://img.shields.io/github/checks-status/laura-rieger/deep-explanation-penalization/master">
-  <img src="https://img.shields.io/badge/license-mit-orange.svg">
-</p>  
-
-<p align="center">
-  <i>Note: this repo is actively maintained. For any questions please file an issue.</i>
-</p>  
-
-![fig_intro](fig_intro.png)
-
-# documentation
-
-- fully-contained data/models/code for reproducing and experimenting with CDEP
-- the [src](src) folder contains the core code for running and penalizing contextual decomposition
-- in addition, we run experiments on 4 datasets, each of which are located in their own folders
-  - notebooks in these folders show demos for different kinds of text
-
-# examples
-
-[ISIC skin-cancer classification](isic-skin-cancer) - using CDEP, we can learn to avoid spurious patches present in the training set, improving test performance!
-
-<p align="center">
-  <img width="60%" src="isic-skin-cancer/results/gradCAM.png"></img>
-</p>
-
-The segmentation maps of the patches can be downloaded [here](https://drive.google.com/drive/folders/1Er2PQMwmDSmg3BThyeu-JKX442OkQJit?usp=sharing)
-
-[ColorMNIST](mnist) - penalizing the contributions of individual pixels allows us to teach a network to learn a digit's shape instead of its color, improving its test accuracy from 0.5% to 25.1%
-
-<p align="center">
-  <img width="80%" src="mnist/results/ColorMNIST_examples.png"></img>
-</p>
-
-[Fixing text gender biases](text) - CDEP can help to learn spurious biases in a dataset, such as gendered words
-
-<p align="center">
-  <img width="50%" src="text/results/data_example.png"></img>
-</p>
-
-# using CDEP on your own data
-
-using CDEP requires two steps:
-1. run CD/ACD on your model. Specifically, 3 things must be altered:
-  - the pred_ims function must be replaced by a function you write using your own trained model. This function gets predictions from a model given a batch of examples.
-  - the model must be replaced with your model
-  - the current CD implementation doesn't always work for all types of networks. If you are getting an error inside of `cd.py`, you may need to write a custom function that iterates through the layers of your network (for examples see `cd.py`)
-2. add CD scores to the loss function (see notebooks)
-
-# related work
-
-- ACD (ICLR 2019 [pdf](https://openreview.net/pdf?id=SkEqro0ctQ), [github](https://github.com/csinva/hierarchical-dnn-interpretations)) - extends CD to CNNs / arbitrary DNNs, and aggregates explanations into a hierarchy
-- PDR framework (PNAS 2019 [pdf](https://arxiv.org/abs/1901.04592)) - an overarching framewwork for guiding and framing interpretable machine learning
-- TRIM (ICLR 2020 workshop [pdf](https://arxiv.org/abs/2003.01926), [github](https://github.com/csinva/transformation-importance)) - using simple reparameterizations, allows for calculating disentangled importances to transformations of the input (e.g. assigning importances to different frequencies)
-- DAC (arXiv 2019 [pdf](https://arxiv.org/abs/1905.07631), [github](https://github.com/csinva/disentangled-attribution-curves)) - finds disentangled interpretations for random forests
-
-
-# reference
-
-- feel free to use/share this code openly
-- if you find this code useful for your research, please cite the following:
-
-```r
-@inproceedings{rieger2020interpretations,
-  title={Interpretations are useful: penalizing explanations to align neural networks with prior knowledge},
-  author={Rieger, Laura and Singh, Chandan and Murdoch, William and Yu, Bin},
-  booktitle={International Conference on Machine Learning},
-  pages={8116--8126},
-  year={2020},
-  organization={PMLR}
-}
-```
-
-  
+## Structure / How to use this project
+- /src/ contains the CD and CDEP code
+- /isic-skin-cancer/ISIC/Run_ISIC.ipynb has the complete, adjusted experiment and analysis on the [ISIC dataset](https://www.isic-archive.com/), run all the cells in order
+- /mnist/ColorMNIST/ contains the training on a colored variant of [MNIST](https://yann.lecun.com/exdb/mnist/), execute 00_makedata.py 01_train_all.py in order (or just 02_make_demo.py)
+- /mnist/analyze_colormnist.ipynb and /mnist/analyze_mnist.ipynb has the analysis part on the MNIST-experiment, run all the cells in order after training
+Note: other folders have experiments on more datasets, like in the original paper. But the code doesn't fully work atm and I won't be fixing those bugs.
