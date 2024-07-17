@@ -1,5 +1,5 @@
 import itertools
-from slurmpy import Slurm
+#from slurmpy import Slurm
 import os
 
 params_to_vary = {
@@ -7,7 +7,7 @@ params_to_vary = {
     'seed': [x for x in range(30)],
     # 1, 10, 50, 100,
     'regularizer_rate': [0, 500, 1000, 5000,],
-    'grad_method': [0,] #set to [0,1,2] to calculate for all methods
+    'grad_method': [1,2,] #set to [0,1,2] to calculate for all methods
 }
  
 ks = [x for x in params_to_vary.keys()]

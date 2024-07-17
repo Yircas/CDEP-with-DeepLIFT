@@ -1,5 +1,5 @@
 import itertools
-from slurmpy import Slurm
+#from slurmpy import Slurm
 import os
 
 params_to_vary = {

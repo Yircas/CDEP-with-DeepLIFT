@@ -21,9 +21,9 @@ import requests
 
 
 class ISICApi(object):
-    def __init__(self, hostname='https://isic-archive.com',
+    def __init__(self, hostname='https://api.isic-archive.com',
                  username=None, password=None):
-        self.baseUrl = '%s/api/v1' % hostname
+        self.baseUrl = '%s/api/v2' % hostname
         self.authToken = None
 
         if username is not None:
