@@ -10,11 +10,12 @@ I'm currently trying to change the CDEP implementation by replacing CD with [Dee
 
 ## Setup
 You'll need Python +12.0 and CUDA 12.1 (with PyTorch 2.3.1). I'd recommend getting the Conda package manager from [Anaconda](https://www.anaconda.com/download/success) to install the other dependencies. In the Jupyter-notebook /isic-skin-cancer/ISIC/Run_ISIC.ipynb you have instructions on how to install necessary packages with Conda for the ISIC-experiment. If some imports won't work, try reinstalling (or uninstall, then install) those packages manually.
-I've also included a requirements.txt, although it's still incomplete and I will be updating it, so it hopefully works in the future. Once I've fixed this, you should be able to run "conda env create -f requirements.txt" to create a Conda-environment and immediately install all dependencies.
+I've also included a requirements.txt, although it's still incomplete and I will be updating it, so it hopefully works in the future. I'm also missing an environment.yml, so you'll have to manually install the packages one by one, as demonstrated in Run_ISIC.ipynb. You can find specific install-commands for each package on Anaconda's official site.
 
 ## Structure / How to use this project
 - /src/ contains the CD and CDEP code
 - /isic-skin-cancer/ISIC/Run_ISIC.ipynb has the complete, adjusted experiment and analysis on the [ISIC dataset](https://www.isic-archive.com/), run all the cells in order
+- /isic-skin-cancer/ISIC/Run_ISIC_DeepLIFT.ipynb contains code with the modified CDEP using DeepLIFT (WIP, doesn't work atm), I'm also trying to comment stuff for a better understanding
 - /mnist/ColorMNIST/ contains the training on a colored variant of [MNIST](https://yann.lecun.com/exdb/mnist/), execute 00_makedata.py 01_train_all.py in order (or just 02_make_demo.py)
 - /mnist/analyze_colormnist.ipynb and /mnist/analyze_mnist.ipynb has the analysis part on the MNIST-experiment, run all the cells in order after training
 Note: other folders have experiments on more datasets, like in the original paper. But the code doesn't fully work atm and I won't be fixing those bugs.
